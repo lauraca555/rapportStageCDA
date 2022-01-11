@@ -463,7 +463,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#truenouvelles-fonctionnalitées-sur-mimbus-3">5.2. Nouvelles fonctionnalitées sur Mimbus 3</a></li>
 </ul>
 </li>
-<li><a href="#truespécifications-techniques-du-projet-élaborées-par-le-candidat-y-compris-pour-la-sécurité">6. Spécifications techniques du projet, élaborées par le candidat, y compris pour la sécurité</a></li>
+<li><a href="#truespécifications-techniques-du-projet-élaborées-par-le-candidat-y-compris-pour-la-sécurité">6. Spécifications techniques du projet, élaborées par le candidat, y compris pour la sécurité</a>
+<ul class="sectlevel2">
+<li><a href="#truefront-end">6.1. Front-end</a></li>
+</ul>
+</li>
 <li><a href="#trueréalisations-du-candidat-comportant-les-extraits-de-code-les-plus-significatifs-et-en-les-argumentant-y-compris-pour-la-sécurité">7. Réalisations du candidat comportant les extraits de code les plus significatifs et en les argumentant, y compris pour la sécurité</a></li>
 <li><a href="#trueprésentation-du-jeu-dessai-élaboré-par-le-candidat-de-la-fonctionnalité-la-plus-représentative-données-en-entrée-données-attendues-données-obtenues">8. Présentation du jeu d’essai élaboré par le candidat de la fonctionnalité la plus représentative (données en entrée, données attendues, données obtenues)</a></li>
 <li><a href="#truedescription-de-la-veille-effectuée-par-le-candidat-durant-le-projet-sur-les-vulnérabilités-de-sécurité">9. Description de la veille, effectuée par le candidat durant le projet, sur les vulnérabilités de sécurité</a></li>
@@ -783,21 +787,36 @@ Avec Vulcan 3 la stratégie commerciale a changé. Le payement d&#8217;un abonne
 <h2 id="truespécifications-techniques-du-projet-élaborées-par-le-candidat-y-compris-pour-la-sécurité"><a class="anchor" href="#truespécifications-techniques-du-projet-élaborées-par-le-candidat-y-compris-pour-la-sécurité"></a>6. Spécifications techniques du projet, élaborées par le candidat, y compris pour la sécurité</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>J&#8217;ai débuté mon activité chez Mimbus effectuant une campagne de test fonctionnel. Cela m&#8217;a permis de commencer à comprendre les fonctionnements de Vulcan. Un exemple de test était d&#8217;envoyer une invitation à un nouvel élève avec le rôle de formateur. La procédure était détaillée et je devais signaler si le logiciel répondait comme attendu et noter les dysfonctionnements.<br>
-Autre chose qui m&#8217;a permis de découvrir le métier de Mimbus, mon premier jour de stage, était d&#8217;effectuer un exercice avec le simulateur SimSpray qui permet de s&#8217;entraîner à peindre la carrosserie d&#8217;une voiture. Cette fois,  je me suis mise à la place d&#8217;un utilisateur avec un rôle d&#8217;apprentie.<br></p>
+<p>J&#8217;ai débuté mon activité chez Mimbus effectuant une campagne de test fonctionnel conçues avec TestLink. Cela m&#8217;a permis de commencer à comprendre les fonctionnements de Vulcan. Un exemple de test était d&#8217;envoyer une invitation à un nouvel élève avec le rôle de formateur. La procédure était détaillée et je devais signaler si le logiciel répondait comme attendu et noter les dysfonctionnements.<br>
+Autre chose qui m&#8217;a permis de découvrir le métier de Mimbus, mon premier jour de stage, était d&#8217;effectuer un exercice avec le simulateur SimSpray qui permet de s&#8217;entraîner à peindre la carrosserie d&#8217;une voiture. Cette fois,  je me suis mise à la place d&#8217;un utilisateur avec un rôle d&#8217;apprentie. Céla m&#8217;a permit de comprendre la grand utilité de simulateurs comme outils d&#8217;apprentisage: simulation réel de la situation de travail, economie des fournitures, correction en temps réel du geste, autoévaluation, entre d&#8217;autres. <br></p>
+</div>
+<div class="sect2">
+<h3 id="truefront-end"><a class="anchor" href="#truefront-end"></a>6.1. Front-end</h3>
+<div class="paragraph">
+<p>Le front de Vulcan est développé avec React JS. Cette librerie javascript, développée par Facebook en 2013, permet de créer des interfaces utilisateurs hautement personnalisables et interactives. L&#8217;interface codé en React est constitué de plusieurs éléments qu&#8217;on nomme composants. Les composants vous permettent de découper l’interface utilisateur en éléments indépendants et réutilisables, vous permettant ainsi de considérer chaque élément de manière isolée. Ces composants affichent ansi des parties de la vue et peuvent beneficier d&#8217;un état local. Quand l&#8217;état local change le composant rende un nouveau affichage sans avoir à refechir toute la page.</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="./image/antReact.png" alt="antReact"></span></p>
 </div>
 <div class="paragraph">
-<p>Le front-end de Vulcan 3 allait changer peu par rapport à Vulcan 2 au niveau de design. La première version utilisé la librairie Art Design dans son ancienne version. Dans la nouvelle version de Vulcan on devait utiliser les composants mis à jour dans la dernière version.<br></p>
+<p>Le front-end de Vulcan 3 allait changer peu par rapport à Vulcan 2 au niveau du design.<br>
+La première version utilisé la librairie Ant Design dans son ancienne version. Ant Design est un design system web basé spécifiquement sur la bibliothèque React JS. Ce bibliothèque de composants permet l&#8217;utilisation de code prêt à l"emploi pour construir l&#8217;interface utilisateur. Ant Design permet de construire les page web à partir d&#8217;un système de grille simple et puissant.<br>
+Dans la nouvelle version de Vulcan on devait utiliser les composants mis à jour dans la dernière version de Ant Design en essayant de respecter le design de Vulcan2.<br>
+Quand j&#8217;a demarré ma tâche sur le front-end Mimbus devait prendre des décitions au sujet du desing. Notre équipe de développeur devait concentrer ses efforts de travail à implementer des fonctionnalités sans se soucier de l&#8217;aspect graphique.</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="./image/antDesign.png" alt="antDesign"></span></p>
 </div>
 <div class="paragraph">
-<p>Par contre, pour évoluers à la paire du back-end la question de l&#8217;utilisation de dernières technologies React a été lancé. Devions-nous utiliser les hooks de React ? <br>
-Les hooks de React sont apparus dans la version 16.7.0 alpha et sont des fonctions qui permettent d’utiliser toutes les fonctionnalités des classes React dans des composants fonctionnels. On peut grâce aux hooks développer une application React uniquement faite des composants fonctionnels.<br></p>
+<p>Pour évoluers à la paire du back-end la question de l&#8217;utilisation de dernières technologies React a été lancé. Devions-nous utiliser les hooks de React ? L&#8217;utilisation de hooks était possible et quel bénefif trouvions-nous à les utiliser ?<br>
+C&#8217;est à partir de ces question que mon travail sur le front-end a débuté. Je connaisais la technologie React que j&#8217;avais apris auparevent dans le cadre d&#8217;un stage. Pour me remettre à l&#8217;utilisation de React et commencer à investiger sur l&#8217;utilisation des hooks je devais effectuer un serie de POCs.<br>
+Le PoC, Proof of Concept, ou preuve de concept en français, est une méthode qui permet d&#8217;évaluer la faisabilité d&#8217;un projet. J&#8217;ai commencé par créer une petite application react où la finalité été de réaliser des rêquette, moyanant une Api, dans des intervales de temps fixés. Dans cd ..</p>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
+<div class="paragraph">
+<p>Les Hooks sont arrivés avec React 16.8. Ils vous permettent de bénéficier d’un état local et d’autres fonctionnalités de React sans avoir à écrire une classe. On peut grâce aux hooks développer une application React uniquement faite des composants fonctionnels.<br></p>
 </div>
 <div class="ulist">
 <ul>
@@ -811,6 +830,7 @@ Les hooks de React sont apparus dans la version 16.7.0 alpha et sont des fonctio
 <p>etude plugins : Uml</p>
 </li>
 </ul>
+</div>
 </div>
 </div>
 </div>
@@ -865,7 +885,7 @@ Les hooks de React sont apparus dans la version 16.7.0 alpha et sont des fonctio
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-12-17 17:36:32 +0100
+Last updated 2022-01-11 11:10:07 +0100
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
