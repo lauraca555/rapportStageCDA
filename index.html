@@ -793,14 +793,14 @@ Autre chose qui m&#8217;a permis de découvrir le métier de Mimbus, mon premier
 <div class="sect2">
 <h3 id="truefront-end"><a class="anchor" href="#truefront-end"></a>6.1. Front-end</h3>
 <div class="paragraph">
-<p>Le front de Vulcan est développé avec React JS. Cette librerie javascript, développée par Facebook en 2013, permet de créer des interfaces utilisateurs hautement personnalisables et interactives. L&#8217;interface codé en React est constitué de plusieurs éléments qu&#8217;on nomme composants. Les composants vous permettent de découper l’interface utilisateur en éléments indépendants et réutilisables, vous permettant ainsi de considérer chaque élément de manière isolée. Ces composants affichent ansi des parties de la vue et peuvent beneficier d&#8217;un état local. Quand l&#8217;état local change le composant rende un nouveau affichage sans avoir à refechir toute la page.</p>
+<p>Le front de Vulcan est développé avec React JS. Cette librerie javascript, développée par Facebook en 2013, permet de créer des interfaces utilisateurs hautement personnalisables et interactives. L&#8217;interface codé en React est constitué de plusieurs éléments qu&#8217;on nomme composants. Les composants vous permettent de découper l’interface utilisateur en éléments indépendants et réutilisables, vous permettant ainsi de considérer chaque élément de manière isolée. Ces composants affichent ansi des parties de la vue et peuvent beneficier d&#8217;un état local. Quand l&#8217;état local change le composant rende un nouveau affichage sans avoir à refrechir toute la page.</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="./image/antReact.png" alt="antReact"></span></p>
 </div>
 <div class="paragraph">
 <p>Le front-end de Vulcan 3 allait changer peu par rapport à Vulcan 2 au niveau du design.<br>
-La première version utilisé la librairie Ant Design dans son ancienne version. Ant Design est un design system web basé spécifiquement sur la bibliothèque React JS. Ce bibliothèque de composants permet l&#8217;utilisation de code prêt à l"emploi pour construir l&#8217;interface utilisateur. Ant Design permet de construire les page web à partir d&#8217;un système de grille simple et puissant.<br>
+La première version utilisait la librairie Ant Design dans son ancienne version. Ant Design est un design system web basé spécifiquement sur la bibliothèque React JS. Ce bibliothèque de composants permet l&#8217;utilisation de code prêt à l&#8217;emploi pour construir l&#8217;interface utilisateur. Ant Design permet de construire les page web à partir d&#8217;un système de grille simple et puissant.<br>
 Dans la nouvelle version de Vulcan on devait utiliser les composants mis à jour dans la dernière version de Ant Design en essayant de respecter le design de Vulcan2.<br>
 Quand j&#8217;a demarré ma tâche sur le front-end Mimbus devait prendre des décitions au sujet du desing. Notre équipe de développeur devait concentrer ses efforts de travail à implementer des fonctionnalités sans se soucier de l&#8217;aspect graphique.</p>
 </div>
@@ -809,11 +809,174 @@ Quand j&#8217;a demarré ma tâche sur le front-end Mimbus devait prendre des d�
 </div>
 <div class="paragraph">
 <p>Pour évoluers à la paire du back-end la question de l&#8217;utilisation de dernières technologies React a été lancé. Devions-nous utiliser les hooks de React ? L&#8217;utilisation de hooks était possible et quel bénefif trouvions-nous à les utiliser ?<br>
-C&#8217;est à partir de ces question que mon travail sur le front-end a débuté. Je connaisais la technologie React que j&#8217;avais apris auparevent dans le cadre d&#8217;un stage. Pour me remettre à l&#8217;utilisation de React et commencer à investiger sur l&#8217;utilisation des hooks je devais effectuer un serie de POCs.<br>
-Le PoC, Proof of Concept, ou preuve de concept en français, est une méthode qui permet d&#8217;évaluer la faisabilité d&#8217;un projet. J&#8217;ai commencé par créer une petite application react où la finalité été de réaliser des rêquette, moyanant une Api, dans des intervales de temps fixés. Dans cd ..</p>
+C&#8217;est à partir de ces question que mon travail sur le front-end a débuté. Je connaisais la technologie React que j&#8217;avais apris auparevent dans le cadre d&#8217;un stage précédent. Pour me remettre à l&#8217;utilisation de React et commencer à investiger sur l&#8217;utilisation des hooks je devais effectuer un serie de POCs.<br>
+Le POC, Proof of Concept, ou preuve de concept en français, est une méthode qui permet d&#8217;évaluer la faisabilité d&#8217;un projet. J&#8217;ai commencé par créer une petite application react où la finalité été de réaliser des rêquettes, moyanant une Api, dans des intervales de temps fixés.<br>
+Dans l&#8217;enssemble, ce poc devait me permettre de prendre la main sur react et pouvait aider à concevoir un futur système d&#8217;envoie de notifications qui devait vérifier l&#8217;existance de messages provenant de la boîte de réception du formateur.<br></p>
 </div>
 <div class="paragraph">
-<p>+</p>
+<p>Pour developpeur ce POC j&#8217;au utilisé la API de la nasa.<br></p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="./image/apiNasa.png" alt="apiNasa"></span></p>
+</div>
+<div class="paragraph">
+<p>Une API (aplication programing interface) est un interface de comunication entre programmes informatiques. On pourrait comparer une API à une bibliothèque de fonctions mises à disposition des développeurs, qui vont permettre à ces derniers d&#8217;écrire un programme capable d&#8217;interagir avec le programme pour lequel la bibliothèque a été créée.<br></p>
+</div>
+<div class="paragraph">
+<p>L&#8217;API de la nasa met à dispositions une serie des URI (Unified Resource Identifier), des identificateurs des ressources, qu&#8217;on peut utiliser pour créer des nouvelles applications.<br></p>
+</div>
+<div class="paragraph">
+<p>Dans ce cas crocret que je vous presente à continuation, mon application effectue une requêtte sur une URI concrete qui permet d&#8217;obtenir des photos classées par leur data de publication.<br></p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="./image/apiNasaDocumentation.png" alt="apiNasaDocumentation"></span></p>
+</div>
+<div class="paragraph">
+<p>Le scenario de utilisation est assez simple est correspont à la comunication entre mon application et le serveur API de la NASA chaque 10 secondes.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="./image/nasaAPI.png" alt="nasaAPI"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>l&#8217;utilisateur ouvre la page web</p>
+</li>
+<li>
+<p>l&#8217;application emet une rêquette àu serveur API de la Nasa pour obtenir la photo du jour.</p>
+</li>
+<li>
+<p>l&#8217;application obtient une response de l&#8217;API de la NASA</p>
+</li>
+<li>
+<p>l&#8217;application affiche le titre, la description et la photo ou vidéo du jour en employant la response json du serveur.</p>
+</li>
+<li>
+<p>l&#8217;application initialise un compteur</p>
+</li>
+<li>
+<p>au bout de 10 segonde, elle efectue le decompte de 1 jour à la date de la photo du jour affichée et re-envoei une nouvelle requête avec une nouvelle date du jour en paramettre.</p>
+</li>
+<li>
+<p>l&#8217;application reçois une nouvelle response de la API et met à jour le compossant affichant les données
+*Et le procesus se repète chaque 10 segondes jusqu&#8217;à la fermature de la page.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="./image/SequenceDiagramAPI.png" alt="SequenceDiagramAPI"></span></p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="./image/00_code.png" alt="00 code"></span></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">import axios from 'axios';
+import { Component } from 'react';
+import TestAxios from './NasaAxios';
+
+// convert the format date to request nasa API
+function toStringDay(day){
+  let stringDate = day.getFullYear() + '-' + (day.getMonth()+1) + '-' + (day.getDate());
+  return stringDate;
+}
+
+class NasaContent extends Component{
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      date: new Date(),
+      jour: new Date(),
+      count: 0,
+      isLoaded : false,
+      url :"",
+      media_type : "",
+      title: ""
+    };
+
+  }
+
+  componentDidMount() {
+
+    this.loadData();
+    this.timerID = setInterval(
+      () =&gt; this.tick(),
+      10000
+    );
+    console.log(this.state.date.toLocaleTimeString() + " au montage du composant");
+
+  }
+
+  async loadData() {
+    const request = `https://api.nasa.gov/planetary/apod?api_key=fFjGwhmPd4QILRYdPGga08GKSBxEZaaYuXhd1E0a&amp;date=${toStringDay(this.state.jour)}`;
+        axios.get(request)
+            .then ((response) =&gt; {
+                console.log(response);
+                this.setState({
+                  title: response.data.title,
+                  url: response.data.url,
+                  media_type : response.data.media_type,
+                  explanation: response.data.explanation,
+                  isLoaded : true
+                });
+            }
+
+            )
+            .catch((error) =&gt; {
+                console.log(error);
+            }
+
+            )
+  }
+
+// Information in browser terminal
+  componentDidUpdate() {
+    console.log("changement de l'état du composant et mise du timer à 0 à " + this.state.date.toLocaleTimeString());
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+
+// Action to execute each interval
+
+  tick() {
+    this.setState({
+      date: new Date(),
+      count: this.state.count + 1,
+      jour : new Date(this.state.jour.getTime()-(1*24*60*60*1000))
+    });
+    this.loadData();
+  }
+
+ render(){
+    return(
+        &lt;&gt;
+        &lt;div className='heading'&gt;
+            &lt;div className='heading-panel'&gt;
+                &lt;h2&gt;{this.state.count} requêtes à l'API de la Nasa. &lt;br/&gt; Dernière vérication à {this.state.date.toLocaleTimeString()}.&lt;/h2&gt;
+                &lt;div&gt;&lt;p&gt;Photo du jour: {this.state.jour.toLocaleDateString()}&lt;/p&gt;&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div className='nasa-api_content'&gt;
+            &lt;TestAxios
+                media_type={this.state.media_type }
+                url={this.state.url }
+                title={this.state.title}
+                dateApi={this.state.dateApi}
+                explanation={this.state.explanation}
+            /&gt;
+        &lt;/div&gt;
+        &lt;/&gt;
+  );
+
+ }
+
+}
+
+export default NasaContent;</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>Les Hooks sont arrivés avec React 16.8. Ils vous permettent de bénéficier d’un état local et d’autres fonctionnalités de React sans avoir à écrire une classe. On peut grâce aux hooks développer une application React uniquement faite des composants fonctionnels.<br></p>
@@ -885,7 +1048,7 @@ Le PoC, Proof of Concept, ou preuve de concept en français, est une méthode qu
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-01-11 11:10:07 +0100
+Last updated 2022-01-15 13:05:37 +0100
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
