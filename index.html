@@ -467,6 +467,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#truefront-end">6.1. Front-end</a></li>
 <li><a href="#trueback-end">6.2. Back-end</a></li>
+<li><a href="#trueétude-de-conception-de-une-arquitecture-modulaire">6.3. Étude de conception de une arquitecture modulaire.</a></li>
 </ul>
 </li>
 <li><a href="#truedescription-de-la-veille-effectuée-par-le-candidat-durant-le-projet-sur-les-vulnérabilités-de-sécurité">7. Description de la veille, effectuée par le candidat durant le projet, sur les vulnérabilités de sécurité</a></li>
@@ -1110,10 +1111,426 @@ export default NasaContent;</code></pre>
 </div>
 <div class="paragraph">
 <p>Mais la collaboration de ces services, et leur functionnement autonome était difficile et Vulcan 2 rancontrait des difficultées de mantainance, arrivant parfois à des dysfonctionnements.<br>
-Vulcan 3 accomplit le mêmes fontionnalitées, mais, cette avec une seule application qui proposse ces services à partir d&#8217;une API REST.<br></p>
+Vulcan 3 accomplit le mêmes fontionnalitées avec une seule application qui proposse ces fonctionnalités à partir d&#8217;une API REST.<br></p>
 </div>
 <div class="paragraph">
-<p>L&#8217;architecture de Vulcan 3 est par cette raison une architecture monolithique qui, comme j&#8217;expliquerais sur les troixièeme partie de la description de me tâche, donne lieu à une application modulaire.<br></p>
+<p><span class="image"><img src="./image/VULCAN2.png" alt="VULCAN2"></span><br></p>
+</div>
+<div class="paragraph">
+<p>L&#8217;architecture de Vulcan 3 est, par cette raison, une architecture monolithique qui, comme j&#8217;expliquerais sur les troixièeme partie de la description de me tâche, donne lieu à une application modulaire.<br></p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="./image/VULCAN3.png" alt="400"></span><br></p>
+</div>
+<div class="paragraph">
+<p>j&#8217;ai travaillé sur les DTO (data transfer object), les objets des transfert de données qui facilitent l&#8217;accès aux données uniquement a partir des getters et setters (des mutateurs et accesseurs).<br>
+Due à la nature du projet il fallait pouvoir assurer le bon functionnement de la communication déjà misse en place par l&#8217;ancienne système. Si les simulateurs réclamaient des données du système, Vulcan devait pouvoir leur fournir ces données pour éviter de difficultées. Je devais identifier les classe d&#8217;accès aux données sur Vulcan 2 et coder les DTO qui pourrait être compatibles sur le nouveau système. Je devait essayer d&#8217;utiliser les classes accessibles sur vulcan 3 à partir de convecteurs et des interfaces. Cette tâche impliqué un travail de identification des propietées de classe Java et ça traduction en language C#.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="trueétude-de-conception-de-une-arquitecture-modulaire"><a class="anchor" href="#trueétude-de-conception-de-une-arquitecture-modulaire"></a>6.3. Étude de conception de une arquitecture modulaire.</h3>
+<div class="paragraph">
+<p>Mon travail dans cette dernière partie du stage consistait à étudier les possibilités d&#8217;ettendre les functionnalités de Vulcan à partir des plugins ou services tiers.<br></p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>Un plugin est un programme indépendant conçu pour être greffé à un logiciel hôte à travers d&#8217;une interface prévue à cet effet, et qui  apporte à ce dernier de nouvelles fonctionnalités.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Les besoins de Vulcan étaient principallement:</p>
+</div>
+<div class="paragraph">
+<p><strong>Extension des Vulcan</strong><br>
+Avec la refonte structurel de Vulcan, le système devrait pouvoir répondre à des spécification bien déterminées selon le type de simulateur ou de besoin exprimé par les clients. Les système doit pouvoir continuer à grandir.</p>
+</div>
+<div class="paragraph">
+<p><strong>Adaptation du modèle économique à partir d’un système de licences</strong><br>
+Vulcan cherche à adapter son modèle économique aussi. Dans la version 2 l&#8217;utilisation du software dépendait d&#8217;une licence obligatoire pour utiliser Vulcan. La politique commerciale à changé. Une partie essentiel à l’utilisation de l&#8217;interface est gratuite. Des customisations du système seront proposés aux utilisateur en forme de plugins payant par licences autonomes ou de paquets configurables.<br></p>
+</div>
+<div class="paragraph">
+<p>J&#8217;ai presenté deux solutions possibles à explorer et j&#8217;ai utilisé un POC pour prouver la viabilité du concept.</p>
+</div>
+<div class="sect3">
+<h4 id="truecouplagedécouplage-de-librairies-avec-un-modèle-darchitechture-logitiel-plugin"><a class="anchor" href="#truecouplagedécouplage-de-librairies-avec-un-modèle-darchitechture-logitiel-plugin"></a>6.3.1. Couplage/découplage de librairies avec un modèle d&#8217;architechture logitiel plugin</h4>
+<div class="paragraph">
+<p><span class="image"><img src="./image/PluginSysteme.png" alt="640" width="480"></span><br></p>
+</div>
+<div class="paragraph">
+<p>L&#8217;utilisation des plugins implique la relation déterminée entre un système hôte et ses correspondants plugins.<br>
+Le système hôte doit fournir un point d&#8217;entre au plugins pour intégrer l&#8217;application et, les plugins doivent se présenter au système et être reconnus tel quel.<br></p>
+</div>
+<div class="paragraph">
+<p>Le système central a besoin de savoir la quantité de modules disponibles et la manière d&#8217;avoir accès. Une de manière possible est d&#8217;effectuer un <strong>registre</strong> avec les informations essentielles : leurs noms, leurs spécificités au sujet de la data, et le protocole remote d&#8217;accès aux données par exemple.<br></p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="./image/schemaPlugin.png" alt="schemaPlugin"></span><br></p>
+</div>
+<div class="paragraph">
+<p>Notre programme doit créer une structure pour permettre à un programme tiers indépendant, de se coupler au cœur du système.<br></p>
+</div>
+<div class="listingblock">
+<div class="title">Implementation principale de AssemblyLoadContext sur .Net pour créer un point d&#8217;entré pour les plugins</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">using System;
+using System.Reflection;
+using System.Runtime.Loader;
+
+namespace AppWithPlugin
+{
+    class PluginLoadContext : AssemblyLoadContext
+    {
+        private AssemblyDependencyResolver _resolver;
+
+        public PluginLoadContext(string pluginPath)
+        {
+            _resolver = new AssemblyDependencyResolver(pluginPath);
+        }
+
+        protected override Assembly Load(AssemblyName assemblyName)
+        {
+            string assemblyPath = _resolver.ResolveAssemblyToPath(assemblyName);
+            if (assemblyPath != null)
+            {
+                return LoadFromAssemblyPath(assemblyPath);
+            }
+
+            return null;
+        }
+
+        protected override IntPtr LoadUnmanagedDll(string unmanagedDllName)
+        {
+            string libraryPath = _resolver.ResolveUnmanagedDllToPath(unmanagedDllName);
+            if (libraryPath != null)
+            {
+                return LoadUnmanagedDllFromPath(libraryPath);
+            }
+
+            return IntPtr.Zero;
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>La création d&#8217;une interface définit un modèle à suivre en imposant un contrat à remplir pour accéder aux services que l&#8217;application mère met à disposition.<br></p>
+</div>
+<div class="listingblock">
+<div class="title">Exemple interface</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">namespace PluginBase
+{
+    public interface IPlugin
+    {
+        string Name { get; }
+        string Description { get; }
+        void Execute();
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Referencement de l&#8217;interface</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">&lt;Project Sdk="Microsoft.NET.Sdk.Web"&gt;
+
+  &lt;PropertyGroup&gt;
+    &lt;TargetFramework&gt;net5.0&lt;/TargetFramework&gt;
+  &lt;/PropertyGroup&gt;
+
+  &lt;ItemGroup&gt;
+    &lt;ProjectReference Include="..\PluginBase\PluginBase.csproj" /&gt;
+  &lt;/ItemGroup&gt;
+
+&lt;/Project&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Dans l&#8217;idéal, les plug-ins sont des unités de code indépendantes sans interdépendance entre elles. Leur finalité est d&#8217;étendre les fonctionnalités du core pour créer une meilleure testabilité et faciliter la maintenance. <br></p>
+</div>
+<div class="listingblock">
+<div class="title">Le plugin, l&#8217;implementation de l&#8217;interface</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">using PluginBase;
+using System;
+
+
+namespace ByePlugin
+{
+    public class ByePlugin : IPlugin
+    {
+        public string Name { get =&gt; "Bye"; }
+        public string Description { get =&gt; "Displays bye message."; }
+
+        public void Execute()
+        {
+            Console.WriteLine("Bye, Bye !!!");
+
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>L&#8217;utilisation des unités de code plus petites peut être une très bonne stratégie pour fuir les relations complexes entre fonctionnalités, avec un code difficile à lire et à comprendre.<br>
+Plutôt que passer les fonctionnalités des plugins dans le code du noyau avec la complexité qu&#8217;impliquerait, il est préférable de coder ces fonctionnalités individuellement. De cette manière, on isole le comportement de chaque dispositif et, en plus, on permet son extensibilité sur de possibles nouvelles options.<br>
+Finalement, dans l&#8217;exemple proposé, notre programme peut coupler les plugins et garantir leur exécution. Ici concrètement, notre système met à disposition les librairies présentes dans un dossier et crée un registre des plugins à faire fonctionner.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">using PluginBase;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+
+namespace AppWithPlugin
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            try
+            {
+                string[] pluginPaths = new string[]
+                    {
+                        @"HelloPlugin\bin\Debug\net5\HelloPlugin.dll",
+                        @"ByePlugin\bin\Debug\net5.0\ByePlugin.dll"
+                    };
+
+                IEnumerable&lt;IPlugin&gt; commands = pluginPaths.SelectMany(pluginPath =&gt;
+                {
+                    Assembly pluginAssembly = LoadPlugin(pluginPath);
+                    return CreateCommands(pluginAssembly);
+                }).ToList();
+                    foreach (IPlugin command in commands)
+                    {
+                        Console.WriteLine($"{command.Name}\t - {command.Description}");
+                        command.Execute();
+                    }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
+        static Assembly LoadPlugin(string relativePath)
+        {
+            // Navigate up to the solution root
+            string root = Path.GetFullPath(Path.Combine(
+                Path.GetDirectoryName(
+                    Path.GetDirectoryName(
+                        Path.GetDirectoryName(
+                            Path.GetDirectoryName(
+                                Path.GetDirectoryName(typeof(Program).Assembly.Location)))))));
+
+            string pluginLocation = Path.GetFullPath(Path.Combine(root, relativePath.Replace('\\', Path.DirectorySeparatorChar)));
+            Console.WriteLine(pluginLocation);
+            Console.WriteLine($"Loading commands from: {pluginLocation}");
+            PluginLoadContext loadContext = new PluginLoadContext(pluginLocation);
+            return loadContext.LoadFromAssemblyName(new AssemblyName(Path.GetFileNameWithoutExtension(pluginLocation)));
+        }
+
+        static IEnumerable&lt;IPlugin&gt; CreateCommands(Assembly assembly)
+        {
+            int count = 0;
+
+            foreach (Type type in assembly.GetTypes())
+            {
+                if (typeof(IPlugin).IsAssignableFrom(type))
+                {
+                    IPlugin result = Activator.CreateInstance(type) as IPlugin;
+                    if (result != null)
+                    {
+                        count++;
+                        yield return result;
+                    }
+                }
+            }
+
+            if (count == 0)
+            {
+                string availableTypes = string.Join(",", assembly.GetTypes().Select(t =&gt; t.FullName));
+                throw new ApplicationException(
+                    $"Can't find any type which implements IPlugin in {assembly} from {assembly.Location}.\n" +
+                    $"Available types: {availableTypes}");
+            }
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<div class="title">Ici on cherche les deux plugins presents dans notre solution.</div>
+<p><span class="image"><img src="./image/TwoPlugins.png" alt="TwoPlugins"></span><br></p>
+</div>
+<div class="paragraph">
+<div class="title">Ici on charge un seul plugin en mettant le deuxième en commentaire</div>
+<p><span class="image"><img src="./image/onePlugin.png" alt="onePlugin"></span><br></p>
+</div>
+<div class="sect4">
+<h5 id="trueavantages"><a class="anchor" href="#trueavantages"></a>Avantages</h5>
+<div class="ulist">
+<ul>
+<li>
+<p>La solution .Net a prévu ce comportement et nous disposons de différents utiles natifs pour créer ce comportement manuellement en suivant un design pattern prouvé.</p>
+</li>
+<li>
+<p>Cette solutionne nous donne la liberté de choisir les normes et la forme de se connecter à l&#8217;application en conservant l&#8217;isolament du noyau.</p>
+</li>
+<li>
+<p>Cette manière nous permettra d&#8217;établir de subclassifications en dépendant des organisations, de la licence ou du simulateur utilisé. Le concepteur pourrait imaginer différents paquets basiques selon le besoin.</p>
+</li>
+<li>
+<p>Des sociétés externes ou des initiatives open source pourraient étendre le comportement par défaut de Vulcan sans pour autant le changer.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="trueinconvénients"><a class="anchor" href="#trueinconvénients"></a>Inconvénients</h5>
+<div class="ulist">
+<ul>
+<li>
+<p>Cette solution nécessite la réflexion et le codage manuel de l&#8217;infrastructure pour définir le champ d&#8217;action des plugins.</p>
+</li>
+<li>
+<p>Il faut veiller à protéger le fonctionnement du cœur du système et anticiper les interactions entre plugins qui pourrait compromettre le bon fonctionnement de l&#8217;application</p>
+</li>
+<li>
+<p>Il faut trouver un équilibre entre normalisation et flexibilité pour que le couplage des plugins soit facile, mais qu&#8217;il ne présente pas un danger pour le système central.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="trueressources"><a class="anchor" href="#trueressources"></a>Ressources</h5>
+<div class="paragraph">
+<p><a href="https://docs.microsoft.com/en-us/dotnet/core/tutorials/creating-app-with-plugin-support#prerequisites">Create a .NET Core application with plugins - .NET | Microsoft Docs</a><br>
+<a href="https://docs.microsoft.com/en-us/dotnet/core/dependency-loading/understanding-assemblyloadcontext">Understanding System.Runtime.Loader.AssemblyLoadContext | Microsoft</a><br>
+<a href="https://betterprogramming.pub/how-to-design-software-plugins-d051ce1099b2">How to design sofware plugins</a><br>
+<a href="https://www.goetas.com/blog/modular-application-architecture-intro/">Modular Application Architecture</a><br>
+<a href="https://www.c-sharpcorner.com/article/using-the-plugin-pattern-in-c-sharp/">Using The Plugin Pattern In C#</a><br>
+<a href="https://medium.com/omarelgabrys-blog/plug-in-architecture-dec207291800">Plug-in Architecture</a>
+<a href="https://docs.microsoft.com/fr-fr/azure/synapse-analytics/sql-data-warehouse/design-elt-data-loading">Stratégies de chargement de données pour un pool SQL dédié dans Azure Synapse Analytics</a>+</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="truedata-pipeline-framework"><a class="anchor" href="#truedata-pipeline-framework"></a>6.3.2. Data pipeline framework</h4>
+<div class="paragraph">
+<p>Le concept est assez simpliste: indépendamment d’où elle vienne, de sa taille, de son utilité, de son type &#8230;&#8203; Ce qu&#8217;on veut faire avec les données peut être réduit en trois concepts et on doit prendre soin d&#8217;encapsuler ces trois comportements:<br></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Collecte<br></p>
+</li>
+<li>
+<p>Processus<br></p>
+</li>
+<li>
+<p>Consomation<br></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Ce processus d&#8217;extraction, transformation et chargement(ETL) est un pipeline de données utilisé pour collecter des données provenant de différentes sources, transformer les données en fonction des règles métier et charger les données dans un magasin de données de destination.<br>
+Cette architecture comporte une coordination de filtres et de canaux (pipes) créant une comunication point-à-point. Les canaux mets en rélation les differents processus à réaliser pour faciliter l&#8217;information attendue.<br></p>
+</div>
+<div class="sect4">
+<h5 id="trueavantages-2"><a class="anchor" href="#trueavantages-2"></a>Avantages</h5>
+<div class="ulist">
+<ul>
+<li>
+<p>Possibilité de travailler avec des données qui proviennent de différentes sources et qui peuvent avoir différents types.</p>
+</li>
+<li>
+<p>La collecte et stockage de données peut se faire sur Azure. Possibilité de traiter une grande quantité des données en vue d&#8217;utiliser la IA.</p>
+</li>
+<li>
+<p>La transformation des donnés  peut être faite par Azure Factory qui dispose de multiples outils pour filtrer et transformer la data.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="trueinconvénients-2"><a class="anchor" href="#trueinconvénients-2"></a>Inconvénients</h5>
+<div class="ulist">
+<ul>
+<li>
+<p>Le bon fonctionnement des fonctionnalités externes est complètement indépendant du fonctionnement du système central. Cela peut protéger notre core mais peut conduire à de situations de rupture et mauvaise communication entre services.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="trueressources-2"><a class="anchor" href="#trueressources-2"></a>Ressources</h5>
+<div class="paragraph">
+<p><a href="https://docs.microsoft.com/fr-fr/azure/architecture/solution-ideas/articles/enterprise-data-warehouse">Architecture d&#8217;entrepôt de données d&#8217;entreprise| Microsoft</a><br>
+<a href="https://medium.com/omarelgabrys-blog/data-pipelines-8bc38c89f501">Data Pipelines</a><br>
+<a href="https://www.goetas.com/blog/modular-application-architecture-pipelines/">Modular Application Architecture - Pipelines</a><br>
+<a href="https://docs.microsoft.com/fr-fr/azure/architecture/data-guide/relational-data/etl">Extraire, transformer et charger (ETL) | Microsoft</a><br>
+<a href="https://azure.microsoft.com/fr-fr/services/data-factory/#overview">data Factory | Service Microsoft</a><br>
+<a href="https://docs.microsoft.com/fr-fr/azure/data-factory/quickstart-create-data-factory-rest-api">Créer une fabrique de données Azure et un pipeline à l’aide de l’API REST</a><br></p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="trueframework-weikio"><a class="anchor" href="#trueframework-weikio"></a>6.3.3. Framework Weikio</h4>
+<div class="sect4">
+<h5 id="trueavantages-3"><a class="anchor" href="#trueavantages-3"></a>Avantages</h5>
+<div class="ulist">
+<ul>
+<li>
+<p>Utilisé déjà pour la création du plugin omnicept.</p>
+</li>
+<li>
+<p>Solution prête à l&#8217;emploi pour .NET</p>
+</li>
+<li>
+<p>Facilité d&#8217;incorporation au système comme un paquet NuGet.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="trueinconvénients-3"><a class="anchor" href="#trueinconvénients-3"></a>Inconvénients</h5>
+<div class="ulist">
+<ul>
+<li>
+<p>Programme externe, peu utilisé, même s&#8217;il est mis à jour régulièrement.</p>
+</li>
+<li>
+<p>Il y a peu d&#8217;information sur le sujet.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="trueressources-3"><a class="anchor" href="#trueressources-3"></a>Ressources</h5>
+<div class="paragraph">
+<p><a href="https://github.com/weikio/PluginFramework">weikio/PluginFramework</a><br></p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="trueconclusion"><a class="anchor" href="#trueconclusion"></a>6.3.4. Conclusion</h4>
+<div class="paragraph">
+<p>Une solution extensible à partir des plugins facilite la performance basique de l&#8217;application. Un de bénéfice à l&#8217;utilisation des plugins est d&#8217;alléger le noyau de fonctionnalités secondaires, ce qui en allège la maintenance et diminue la surface de vulnérabilité aux attaques de sécurité.<br>
+L&#8217;objectif est de pouvoir ajouter des fonctionnalités sans avoir à tout reprogrammer.<br>
+Dans le cas concret de Vulcan, de nouvelles parties de code pourraient être créées indépendamment sans avoir à se soucier du comportement élémentaire du système<br>
+Le développement de plugins divise la charge du travail pour les intervenants du projet qui porraient étudier les besoin en concevant de plus petites unités.<br>
+Cet conception modulaire pourrait permettre à des sociétés externes ou des initiatives open source d&#8217;étendre le comportement par défaut de Vulcan sans pour autant le changer.
+Les trois solutions présentées suggèrent des approches pour résoudre la problématique d&#8217;incorporation des programmes tiers et indépendants au système Vulcan.<br>
+La création d&#8217;un système de couplage/découplage de librairies extérieures à partir du système central parait indispensable pour établir un cadre d&#8217;évolution du système qui permettrait de garder le contrôle et réaffirmerait la position centrale de Vulcan, le cœur du métier.<br>
+Également, la création d&#8217;une interface utilisateur ou les clients auraient la possibilité d&#8217;activer les services proposés doit être piloté par Vulcan, pour assurer la sécurité et être un pilier pour l&#8217;effort commercial.<br>
+Néanmoins, l&#8217;étude sur la création d&#8217;un pipeline de données doit être considérée et approfondie si le système ambitionne de rester compétitif. Il serait dommage de se priver d&#8217;outils mis à disposition par Microsoft et profiter du choix de cette  technologie qui ouvre la possibilité de proposer de multiples services à nos clients et pourrait en attirer des nouveaux. Je pense à l&#8217;incorporation de l&#8217;intelligence artificielle ou le traitement en temps réel de mesures envoyées par des outils toujours plus performants à propos de la collecte de données.<br>
+En conclusion, ces solutions peuvent être explorés distinctement et se recroiser selon les besoins. L&#8217;utilisation de librairies doit être préférée pour les solutions qui répondent aux règles métier de Vulcan pour  avoir un meilleur contrôle et rapidité sur la communication.  L&#8217;utilisation des pipelines et d&#8217;une éventuel azure factory doit plutôt être réservé à la mise en place des extensions gourmandes en données. La solution weikio peut être une solution rapide dans un premier temps. <br></p>
+</div>
 </div>
 </div>
 </div>
@@ -1139,7 +1556,7 @@ Vulcan 3 accomplit le mêmes fontionnalitées, mais, cette avec une seule applic
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-01-20 14:01:51 +0100
+Last updated 2022-01-20 22:24:27 +0100
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
