@@ -466,13 +466,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#truespécifications-techniques-du-projet-élaborées-par-le-candidat-y-compris-pour-la-sécurité">6. Spécifications techniques du projet, élaborées par le candidat, y compris pour la sécurité</a>
 <ul class="sectlevel2">
 <li><a href="#truefront-end">6.1. Front-end</a></li>
+<li><a href="#trueback-end">6.2. Back-end</a></li>
 </ul>
 </li>
-<li><a href="#trueréalisations-du-candidat-comportant-les-extraits-de-code-les-plus-significatifs-et-en-les-argumentant-y-compris-pour-la-sécurité">7. Réalisations du candidat comportant les extraits de code les plus significatifs et en les argumentant, y compris pour la sécurité</a></li>
-<li><a href="#trueprésentation-du-jeu-dessai-élaboré-par-le-candidat-de-la-fonctionnalité-la-plus-représentative-données-en-entrée-données-attendues-données-obtenues">8. Présentation du jeu d’essai élaboré par le candidat de la fonctionnalité la plus représentative (données en entrée, données attendues, données obtenues)</a></li>
-<li><a href="#truedescription-de-la-veille-effectuée-par-le-candidat-durant-le-projet-sur-les-vulnérabilités-de-sécurité">9. Description de la veille, effectuée par le candidat durant le projet, sur les vulnérabilités de sécurité</a></li>
-<li><a href="#truedescription-dune-situation-de-travail-ayant-nécessité-une-recherche-et-effectuée-par-le-candidat-durant-le-projet">10. Description d’une situation de travail ayant nécessité une recherche et effectuée par le candidat durant le projet</a></li>
-<li><a href="#truebilan-et-continuation-projet-professional">11. Bilan et continuation projet professional</a></li>
+<li><a href="#truedescription-de-la-veille-effectuée-par-le-candidat-durant-le-projet-sur-les-vulnérabilités-de-sécurité">7. Description de la veille, effectuée par le candidat durant le projet, sur les vulnérabilités de sécurité</a></li>
+<li><a href="#truedescription-dune-situation-de-travail-ayant-nécessité-une-recherche-et-effectuée-par-le-candidat-durant-le-projet">8. Description d’une situation de travail ayant nécessité une recherche et effectuée par le candidat durant le projet</a></li>
+<li><a href="#truebilan-et-continuation-projet-professional">9. Bilan et continuation projet professional</a></li>
 </ul>
 </div>
 </div>
@@ -826,7 +825,7 @@ Dans l&#8217;enssemble, ce poc devait me permettre de prendre la main sur react 
 <p>L&#8217;API de la nasa met à dispositions une serie des URI (Unified Resource Identifier), des identificateurs des ressources, qu&#8217;on peut utiliser pour créer des nouvelles applications.<br></p>
 </div>
 <div class="paragraph">
-<p>Dans ce cas crocret que je vous presente à continuation, mon application effectue une requêtte sur une URI concrete qui permet d&#8217;obtenir des photos classées par leur data de publication.<br></p>
+<p>Dans ce cas crocret que je vous presente à continuation, mon application effectue une requêtte sur une URI qui permet d&#8217;obtenir des photos classées par leur data de publication.<br></p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="./image/apiNasaDocumentation.png" alt="apiNasaDocumentation"></span></p>
@@ -864,10 +863,16 @@ Dans l&#8217;enssemble, ce poc devait me permettre de prendre la main sur react 
 </ul>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="./image/SequenceDiagramAPI.png" alt="SequenceDiagramAPI"></span></p>
+<p><span class="image"><img src="./image/SequenceDiagramAPI.png" alt="SequenceDiagramAPI"></span><br></p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="./image/00_code.png" alt="00 code"></span></p>
+<p>Voici comment le compossant chargé de récuperer les données et appelé dans le code javascrit de l&#8217;application.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="./image/00_code.png" alt="00 code"></span><br></p>
+</div>
+<div class="paragraph">
+<p>Voici comment une rêquette est lancé à partir d&#8217;une classe JS qui herite de la classe Component. On met en place un compteur qui relance l&#8217;opération chaque 10 segondes au montage du composant en utilisant la methode componentDidMount().</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -979,68 +984,154 @@ export default NasaContent;</code></pre>
 </div>
 </div>
 <div class="paragraph">
+<p>Mais on peut aussi utiliser les hooks de React depuis un composant functionnel. Et c&#8217;était la finalité de mon étude sur le hooks en react.</p>
+</div>
+<div class="paragraph">
 <p>Les Hooks sont arrivés avec React 16.8. Ils vous permettent de bénéficier d’un état local et d’autres fonctionnalités de React sans avoir à écrire une classe. On peut grâce aux hooks développer une application React uniquement faite des composants fonctionnels.<br></p>
 </div>
+<div class="paragraph">
+<p><span class="image"><img src="./image/ApiNasaHooks.png" alt="ApiNasaHooks"></span><br></p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="./image/ApiNasaHooksDetail.png" alt="ApiNasaHooksDetail"></span><br></p>
+</div>
+<div class="paragraph">
+<p>Voici le code de l&#8217;application de la Nasa avec des hooks. Plus concretement, j&#8217;utilise useState et useEffect pour arriver au même résultat.<br></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">import axios from 'axios';
+import { useState, useEffect } from 'react';
+import TestAxios from './NasaAxios';
+
+// convert the format date to request nasa API
+function toStringDay(d){
+  let stringDate = d.getFullYear() + '-' + (d.getMonth()+1) + '-' + (d.getDate());
+  return stringDate;
+}
+
+
+// return day before initial date considering counter
+const setDaybefore = (count) =&gt; toStringDay(new Date((new Date().getTime())-(count*24*60*60*1000)));
+
+function NasaContent() {
+
+  const [count, setCount] = useState(1);
+  const [data, setData] = useState(null);
+  const [error, setError] = useState('');
+
+  useEffect(() =&gt; {
+
+      const request = `https://api.nasa.gov/planetary/apod?api_key=fFjGwhmPd4QILRYdPGga08GKSBxEZaaYuXhd1E0a&amp;date=${setDaybefore(count)}`;
+
+      axios.get(request)
+        .then((res) =&gt; {
+            setData(res.data);
+          })
+
+        .catch((err) =&gt; {
+            setError(err);
+
+        return { data, error};
+      })
+
+      console.log(`error : ${error}`)
+      let interval = setInterval(() =&gt; {
+      setCount(count =&gt; count + 1);
+
+      }, 10000);
+
+      return () =&gt; clearInterval(interval);
+
+  }, [count]);
+
+
+  if(data){
+    return (
+      &lt;&gt;
+      &lt;div className='heading'&gt;
+          &lt;div className='heading-panel'&gt;
+              &lt;h2&gt;{count} requêtes à l'API de la Nasa. &lt;br/&gt; Dernière vérication à {data.date}.&lt;/h2&gt;
+              &lt;div&gt;&lt;p&gt;Photo du jour: {data.date}&lt;/p&gt;&lt;/div&gt;
+          &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div className='nasa-api_content'&gt;
+          &lt;TestAxios
+              media_type={data.media_type }
+              url={data.url}
+              title={data.title}
+              dateApi={data.dateApi}
+              explanation={data.explanation}
+          /&gt;
+      &lt;/div&gt;
+
+      &lt;/&gt;
+      )
+  }
+
+  else {return (
+    &lt;&gt;
+    &lt;p&gt;not data {count}&lt;/p&gt;
+    &lt;/&gt;
+
+  )}
+}
+
+export default NasaContent;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Avec cet étude de hooks je suis arrivée à la conclusion que il était possible d&#8217;utiliser les hooks pour avancer avec le derniers outils de react. Grâce aux hooks les code est plus compact, la où avant on devait créer une classe, les hooks simplifient le code. Par contre, l&#8217;utilisation de hooks comporte une nouvelle manière de voir les changement des état et l&#8217;affichage des composants que il faut arriver à comprendre cette nouvelle vision.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="trueback-end"><a class="anchor" href="#trueback-end"></a>6.2. Back-end</h3>
+<div class="paragraph">
+<p>Pendant ce stage, j&#8217;ai eu aussi l&#8217;opportunité de collaborer dans la création du back-end. Ceci m&#8217;a permis d’observer deux types d’architecture et deux environnements différents. La différence principale est l&#8217;utilisation de deux langages de programmation distincts. Vulcan 3 est développé avec  c#, avec le framewrok .net de Microsoft tandis que Vulcan 2 était codé avec JavaEE. <br></p>
+</div>
+<div class="paragraph">
+<p>Les architectures des deux applications sont aussi différentes. Pour Vulcan 2, l&#8217;architecture se structure en microservices. On pouvait distinguer differents services autonomes qui correspondaient à de services uniques et spécifiques.<br></p>
+</div>
 <div class="ulist">
 <ul>
 <li>
-<p>Front-end: JS6 React Redux et Art Design // Visual Studio Code // Postman (mock)</p>
+<p><strong>FSS</strong> (File Systeme Service) : gestion des fichiers.</p>
 </li>
 <li>
-<p>Back-end : travail dto // Visual Studio // Java vers C#</p>
+<p><strong>IAM</strong> (Identity Acces Management) : qui concernait l’authentification et les autorisations ainssi que, la gestion des organizations clientes, de classes et des elèves.</p>
 </li>
 <li>
-<p>etude plugins : Uml</p>
+<p><strong>PLM</strong> (Product Licence Management) : structure des licenses donnant droit à l&#8217;utilisation des simulateurs.</p>
+</li>
+<li>
+<p><strong>EDU</strong> : en reference aux parcours pédagogiques, modules, exercices, résultats, et détails des résultats.</p>
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p>Mais la collaboration de ces services, et leur functionnement autonome était difficile et Vulcan 2 rancontrait des difficultées de mantainance, arrivant parfois à des dysfonctionnements.<br>
+Vulcan 3 accomplit le mêmes fontionnalitées, mais, cette avec une seule application qui proposse ces services à partir d&#8217;une API REST.<br></p>
 </div>
+<div class="paragraph">
+<p>L&#8217;architecture de Vulcan 3 est par cette raison une architecture monolithique qui, comme j&#8217;expliquerais sur les troixièeme partie de la description de me tâche, donne lieu à une application modulaire.<br></p>
 </div>
-</div>
-<div class="sect1">
-<h2 id="trueréalisations-du-candidat-comportant-les-extraits-de-code-les-plus-significatifs-et-en-les-argumentant-y-compris-pour-la-sécurité"><a class="anchor" href="#trueréalisations-du-candidat-comportant-les-extraits-de-code-les-plus-significatifs-et-en-les-argumentant-y-compris-pour-la-sécurité"></a>7. Réalisations du candidat comportant les extraits de code les plus significatifs et en les argumentant, y compris pour la sécurité</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p>test fonctionnels</p>
-</li>
-<li>
-<p>étude hooks</p>
-</li>
-<li>
-<p>travail front: organizations</p>
-</li>
-<li>
-<p>travail back dto</p>
-</li>
-<li>
-<p>etude plugins</p>
-</li>
-</ul>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="trueprésentation-du-jeu-dessai-élaboré-par-le-candidat-de-la-fonctionnalité-la-plus-représentative-données-en-entrée-données-attendues-données-obtenues"><a class="anchor" href="#trueprésentation-du-jeu-dessai-élaboré-par-le-candidat-de-la-fonctionnalité-la-plus-représentative-données-en-entrée-données-attendues-données-obtenues"></a>8. Présentation du jeu d’essai élaboré par le candidat de la fonctionnalité la plus représentative (données en entrée, données attendues, données obtenues)</h2>
+<h2 id="truedescription-de-la-veille-effectuée-par-le-candidat-durant-le-projet-sur-les-vulnérabilités-de-sécurité"><a class="anchor" href="#truedescription-de-la-veille-effectuée-par-le-candidat-durant-le-projet-sur-les-vulnérabilités-de-sécurité"></a>7. Description de la veille, effectuée par le candidat durant le projet, sur les vulnérabilités de sécurité</h2>
 <div class="sectionbody">
 
 </div>
 </div>
 <div class="sect1">
-<h2 id="truedescription-de-la-veille-effectuée-par-le-candidat-durant-le-projet-sur-les-vulnérabilités-de-sécurité"><a class="anchor" href="#truedescription-de-la-veille-effectuée-par-le-candidat-durant-le-projet-sur-les-vulnérabilités-de-sécurité"></a>9. Description de la veille, effectuée par le candidat durant le projet, sur les vulnérabilités de sécurité</h2>
+<h2 id="truedescription-dune-situation-de-travail-ayant-nécessité-une-recherche-et-effectuée-par-le-candidat-durant-le-projet"><a class="anchor" href="#truedescription-dune-situation-de-travail-ayant-nécessité-une-recherche-et-effectuée-par-le-candidat-durant-le-projet"></a>8. Description d’une situation de travail ayant nécessité une recherche et effectuée par le candidat durant le projet</h2>
 <div class="sectionbody">
 
 </div>
 </div>
 <div class="sect1">
-<h2 id="truedescription-dune-situation-de-travail-ayant-nécessité-une-recherche-et-effectuée-par-le-candidat-durant-le-projet"><a class="anchor" href="#truedescription-dune-situation-de-travail-ayant-nécessité-une-recherche-et-effectuée-par-le-candidat-durant-le-projet"></a>10. Description d’une situation de travail ayant nécessité une recherche et effectuée par le candidat durant le projet</h2>
-<div class="sectionbody">
-
-</div>
-</div>
-<div class="sect1">
-<h2 id="truebilan-et-continuation-projet-professional"><a class="anchor" href="#truebilan-et-continuation-projet-professional"></a>11. Bilan et continuation projet professional</h2>
+<h2 id="truebilan-et-continuation-projet-professional"><a class="anchor" href="#truebilan-et-continuation-projet-professional"></a>9. Bilan et continuation projet professional</h2>
 <div class="sectionbody">
 
 </div>
@@ -1048,7 +1139,7 @@ export default NasaContent;</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-01-15 13:05:37 +0100
+Last updated 2022-01-20 14:01:51 +0100
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
